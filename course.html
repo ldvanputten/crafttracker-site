@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>CraftTracker Crochet Course</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #fdfcfb;
+    --fg: #1c1a1d;
+    --muted: #6b6570;
+    --accent: #7c5cbf;
+    --rule: #e6e2e8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #17151a;
+      --fg: #f2f0f4;
+      --muted: #a49dae;
+      --accent: #b39ddb;
+      --rule: #2c2832;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 64px 24px 96px;
+  }
+  h1 { font-size: 28px; margin: 0 0 4px; }
+  h2 { font-size: 19px; margin: 40px 0 16px; }
+  p, li { color: var(--fg); }
+  a { color: var(--accent); }
+
+  #gate {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 320px;
+  }
+  #gate input {
+    padding: 10px 12px;
+    font-size: 16px;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--fg);
+  }
+  #gate button {
+    padding: 10px 16px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    background: var(--accent);
+    color: var(--bg);
+    cursor: pointer;
+  }
+  #gate-error { color: #c0392b; font-size: 14px; min-height: 18px; }
+
+  .videos { display: grid; gap: 24px; margin-bottom: 8px; }
+  .video .label { font-weight: 600; margin: 0 0 8px; color: var(--muted); font-size: 14px; }
+  .embed { position: relative; width: 100%; padding-top: 56.25%; border-radius: 8px; overflow: hidden; background: var(--rule); }
+  .embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .guides { padding-left: 22px; }
+
+  #content { display: none; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Crochet Course</h1>
+
+  <div id="gate">
+    <p>This page is for CraftTracker crochet course students. Enter the course password to continue.</p>
+    <input id="password" type="password" placeholder="Password" autocomplete="off">
+    <button id="unlock">Unlock</button>
+    <p id="gate-error"></p>
+  </div>
+
+  <div id="content"></div>
+</main>
+
+<script>
+const PAYLOAD = {
+  salt: "luU3TXSPvEco64+QXa+wmw==",
+  iv: "U5IhLrXOEdnz9Cro",
+  ciphertext: "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"
+};
+
+function b64ToBytes(b64) {
+  return Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+}
+
+async function tryUnlock(password) {
+  const errorEl = document.getElementById('gate-error');
+  errorEl.textContent = '';
+  try {
+    const enc = new TextEncoder();
+    const salt = b64ToBytes(PAYLOAD.salt);
+    const iv = b64ToBytes(PAYLOAD.iv);
+    const ciphertext = b64ToBytes(PAYLOAD.ciphertext);
+    const baseKey = await crypto.subtle.importKey('raw', enc.encode(password), 'PBKDF2', false, ['deriveKey']);
+    const key = await crypto.subtle.deriveKey(
+      { name: 'PBKDF2', salt, iterations: 250000, hash: 'SHA-256' },
+      baseKey,
+      { name: 'AES-GCM', length: 256 },
+      false,
+      ['decrypt']
+    );
+    const plainBuf = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, ciphertext);
+    const html = new TextDecoder().decode(plainBuf);
+    document.getElementById('content').innerHTML = html;
+    document.getElementById('content').style.display = 'block';
+    document.getElementById('gate').style.display = 'none';
+  } catch (e) {
+    errorEl.textContent = 'Incorrect password.';
+  }
+}
+
+document.getElementById('unlock').addEventListener('click', () => {
+  tryUnlock(document.getElementById('password').value);
+});
+document.getElementById('password').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') tryUnlock(document.getElementById('password').value);
+});
+</script>
+</body>
+</html>
